@@ -50,7 +50,7 @@ Entonces, para cada persona no infectada en una manzana debe realizarse este pro
 Hasta acá se puede probar creando una simulación, agregando personas infectadas, ejecutando la simulación de paso de día, y viendo cómo queda. 
 
 ## Gráfico
-Armar un programa que muestre una simulación en un Wollok Game. Consejo: empezar por una simulación chiquita, p.ej. de 4 filas x 6 columnas.  
+Armar un programa que muestre una simulación en un Wollok Game. Consejo: empezar por una simulación chiquita, p.ej. de 4 filas x 6 columnas. Mucho más no, porque ya les va a tardar mucho.   
 En cada casillero del game va una manzana, la que corresponde a la posición del casillero. P.ej. en el casillero (3,4) del game, se dibuja la manzana cuya posición es (3,4).  
 La imagen va cambiando de acuerdo a la cantidad de personas infectadas. Una opción es, en este orden:
 - rojo si están todes infectades.
@@ -62,7 +62,7 @@ La imagen va cambiando de acuerdo a la cantidad de personas infectadas. Una opci
 Que haya teclas para
 - consultar el estado general de la simulación, p.ej. algo así: "Día 8, total de personas: 245, infectados: 25, con síntomas 6". Para esto usar `game.say`. Si no se ve bien, usar la alternativa `console.prinln(<string>)`, que muestra un texto en la consola.
 - agregar una persona infectada, sin síntomas, que se agarró la infección en el día actual de la simulación, a una manzana al azar. O sea, no infectar a una persona que ya está, sino agregar una persona nueva. Esto para simular el efecto de las personas que vienen del exterior.
-- simular el paso de un día, que realice para cada manzana, las tres acciones: movimiento, contagio, y curación.
+- simular el paso de un día, que realice para cada manzana, las tres acciones: movimiento, contagio, y curación. Que mande un mensaje a consola (p.ej. `console.prinln("terminó el día")`), para que sepan que terminó.
 
 Acá se lo puede jugar, y ver la (horrible) velocidad en la que se expande la enfermedad si la gente no cumple la cuarentena.
 
@@ -72,9 +72,13 @@ Agregar al juego un agente de salud, que se va moviendo por el barrio. Puede rea
 1. convencer a todes a que respeten la cuarentena.
 Esto lo hace en la manzana correspondiente a su posición actual.
 
-Agregar al agente al Game, lograr que se mueva por el barrio, y habilitar dos teclas, una para cada una de las acciones indicadas.
+Agregar al agente al Game, lograr que se mueva por el barrio, y habilitar dos teclas, una para cada una de las acciones indicadas, que se ejecutan en la manzana en la que está el agente.
 
-Con esto se puede apreciar el efecto de convencernos de aislar a quienes presentan síntomas, y sobre todo, de respetar la cuarentena.
+Con esto se puede apreciar el efecto de convencernos de aislar a quienes presentan síntomas, y sobre todo, de respetar la cuarentena.  
+Para esto, después de agregar algunos infectados iniciales, se puede hacer pasear al agente por todo el tablero mandando a todo el mundo a cuarentena, y ver cómo evoluciona.  
+Una alternativa es que mande a cuarentena a la mitad del tablero. En este caso, repetir el "mandar a cuarentena" cada p.ej. 4 días. Debería verse que en la mitad por la que nunca pasa el agente, la infección avanza más rápido
+
+
 
 ## Curación
 Supongamos que la infección dura 20 días, o sea, todas las personas que tienen una infección que empezó hace más de 20 días, dejan de tenerla.
