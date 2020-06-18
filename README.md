@@ -23,46 +23,44 @@ De cada manzana nos van a interesar
 Hasta acá podemos: crear una manzana, agregarle gente con distintas combinaciones de infección, aislamiento y respeto de la cuarentena, y probar que la manzana responda correctamente a las consultas planteadas.
 
 
-## Estado inicial, simulación de un día, movimiento de gente
+## Estado inicial, simulación de un día
 En el estado inicial de la simulación, en cada manzana viven 10 personas, ninguna infectada, ninguna aislada, ninguna hace cuarentena. La simulación arranca en el día 0. 
 
-Cada día que pasa, vamos a simular tres cosas: el movimiento de gente, la posibilidad de contagio de quienes no estén infectades, y la curación de quienes están infectades.
+Cada día que pasa, vamos a simular dos cosas: el movimiento de gente, y la posibilidad de contagio de quienes no estén infectades.
 
 ### Movimiento
 La acción que nos conviene pensar es que una manzana puede _transladar_ a uno de sus habitantes. ¿Qué quiere decir esto? Que se toma un habitante al azar de la manzana _que no esté aislado_, y se lo "muda" a otra manzana, también al azar. Eso quiere decir simplemente que la persona se va de una manzana y pasa a estar en la otra.  
-En lo posible, hacer que la manzana a la que se "muda" a la persona sea vecina de su residencia actual. 
+Para que no quede ninguna manzana vacía, ejecutar el translado solamente si hay más de dos personas en condiciones de transladarse (o sea, no aisladas).  
+En lo posible, hacer que la manzana a la que se "muda" a la persona sea vecina de su residencia actual.  
 
 ### Contagio
 Una persona se puede contagiar, solamente, de otra persona que viva **en su misma manzana**, que esté infectada y no esté aislada.  
 Pero pero pero ... si dijimos que no hay ninguna persona infectada ¿cómo hace alguien para contagiarse? Ya vamos a ver que una de las acciones del juego es agregar una persona infectada, la idea es que no hay nadie infectado hasta que llegan "casos importados", y esos son los que van a poder contagiar.  
 A su vez, los movimientos de población pueden provocar que la infección se expanda, sin necesidad de que haya contagios entre manzanas. Por eso en esta simulación, los contagios se dan nada más entre personas que viven en una misma manzana.
 
-La probabilidad de contagio de una persona infectada a una no infectada, es del 2\% si la no infectada respeta la cuarentena, y del 20\% si no la respeta.  
-O sea, hay que generar un número al azar entre 0 y 99. Si el no infectado respeta la cuarentena y el número es menor a 2, entonces se infecta. Si el no infectado _no_ respecta la cuarentena, se infecta si el número es menor a 20, o sea, tiene **mucha** más chance de infectarse.  
-En cualquier caso, si la persona se infecta, tiene un 25\% de tener síntomas. O sea, otro número al azar, si es menor a 25 la persona tiene síntomas, si no no.
+La probabilidad de contagio de una persona infectada a una no infectada, es del 2\% si la no infectada respeta la cuarentena, y del 25\% si no la respeta.  
+O sea, hay que generar un número al azar entre 0 y 99. Si el no infectado respeta la cuarentena y el número es menor a 2, entonces se infecta. Si el no infectado _no_ respecta la cuarentena, se infecta si el número es menor a 25, o sea, tiene **mucha** más chance de infectarse.  
+En cualquier caso, si la persona se infecta, tiene un 30\% de tener síntomas. O sea, otro número al azar, si es menor a 30 la persona tiene síntomas, si no no.
 
 Entonces, para cada persona no infectada en una manzana debe realizarse este proceso, una vez para cada persona infectada y no aislada que viva en la misma manzana. Si una manzana
 - no tiene ninguna persona infectada, entonces no hay que hacer nada.
 - tiene una persona infectada, entonces para cada persona no infectada en la manzana hay que realizar el proceso recién descripto (generar el número al azar, y que se infecte si es menor al valor que corresponde según si respeta o no la cuarentena) una vez.
 - tiene 4 personas infectadas, entonces para cada persona no infectada en la manzana hay que realizar el proceso recién descripto _cuatro veces_. Una forma es hacer lo siguiente: generar _cuatro_ números al azar, si al menos uno está en el "rango de infección", entonces la persona se infecta.
 
-### Curación
-Digamos que la infección dura 15 días, o sea, todas las personas que tienen una infección que empezó hace más de 15 días, dejan de tenerla.
-
-Hasta acá se puede probar creando una simulación, agregando personas infectadas, ejecutando la simulación de paso de día, y viendo cómo queda. También mudar una persona. 
+Hasta acá se puede probar creando una simulación, agregando personas infectadas, ejecutando la simulación de paso de día, y viendo cómo queda. 
 
 ## Gráfico
 Armar un programa que muestre una simulación en un Wollok Game. Consejo: empezar por una simulación chiquita, p.ej. de 4 filas x 6 columnas.  
 En cada casillero del game va una manzana, la que corresponde a la posición del casillero. P.ej. en el casillero (3,4) del game, se dibuja la manzana cuya posición es (3,4).  
-La imagen va cambiando de acuerdo a la cantidad de personas infectadas. Una opción es:
-- blanco si no hay infectados
-- amarillo si hay entre 1 y 3.
-- naranja si hay entre 4 y 7.
-- naranja oscuro si hay más de 7 pero menos del total de las personas de la manzana.
+La imagen va cambiando de acuerdo a la cantidad de personas infectadas. Una opción es, en este orden:
 - rojo si están todes infectades.
+- naranja oscuro si hay más de 7 pero menos del total de las personas de la manzana.
+- naranja si hay entre 4 y 7.
+- amarillo si hay entre 1 y 3.
+- blanco si no hay infectados
 
 Que haya teclas para
-- consultar el estado general de la simulación, p.ej. algo así: "Día 8, total de personas: 245, infectados: 25, con síntomas 6". Para esto usar `game.say`.
+- consultar el estado general de la simulación, p.ej. algo así: "Día 8, total de personas: 245, infectados: 25, con síntomas 6". Para esto usar `game.say`. Si no se ve bien, usar la alternativa `console.prinln(<string>)`, que muestra un texto en la consola.
 - agregar una persona infectada, sin síntomas, que se agarró la infección en el día actual de la simulación, a una manzana al azar. O sea, no infectar a una persona que ya está, sino agregar una persona nueva. Esto para simular el efecto de las personas que vienen del exterior.
 - simular el paso de un día, que realice para cada manzana, las tres acciones: movimiento, contagio, y curación.
 
@@ -78,3 +76,7 @@ Agregar al agente al Game, lograr que se mueva por el barrio, y habilitar dos te
 
 Con esto se puede apreciar el efecto de convencernos de aislar a quienes presentan síntomas, y sobre todo, de respetar la cuarentena.
 
+## Curación
+Supongamos que la infección dura 20 días, o sea, todas las personas que tienen una infección que empezó hace más de 20 días, dejan de tenerla.
+
+Agregar la posible curación de todes les infectades a la simulación del paso de un día.
