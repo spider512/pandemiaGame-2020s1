@@ -1,0 +1,39 @@
+import wollok.game.*
+import simulacion.*
+
+object pandemiaGameConfig {
+	method height() = 4
+	method width() = 6
+	method title() = "Simuléichon"
+	
+	method configureGame() {
+		self.configureGameParameters()
+		self.agregarManzanas()
+		// agregar las teclas de acciones
+		// después, al agente de salud y sus teclas de acciones y movimiento
+	}
+		
+	method configureGameParameters() {
+		game.height(self.height())
+		game.width(self.width())
+		game.title(self.title())
+	}
+	
+	method agregarManzanas() {
+		(1..game.width()).forEach({x => 
+			(1..game.height()).forEach({y => 
+				const nuevaManzana = simulacion.crearManzana()
+				nuevaManzana.position(game.at(x-1,y-1))
+				simulacion.agregarManzana(nuevaManzana)
+				game.addVisual(nuevaManzana)
+			})
+		})
+	}
+	
+}
+
+program pandemiaGame {
+	pandemiaGameConfig.configureGame()
+	game.start()
+}
+
