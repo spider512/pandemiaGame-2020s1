@@ -24,17 +24,32 @@ class Manzana {
 	}
 	
 	method personaSeMudaA(persona, manzanaDestino) {
-		// implementar
+		manzanaDestino.personas().add(persona)
+		persona.viveEnManzana(manzanaDestino)
 	}
 	
 	method cantidadContagiadores() {
-		return 0
-		// reemplazar por la cantidad de personas infectadas que no estan aisladas
+		return self.cantPersonasInfectadasNoAisladas()
+	
 	}
 	
 	method noInfectades() {
 		return personas.filter({ pers => not pers.estaInfectada() })
-	} 	
+	} 
+	
+	method PersonasInfectadas() {
+		return personas.filter({ pers => pers.estaInfectada() })
+	}	
+	
+	method cantPersonasInfectadas() {
+		return self.PersonasInfectadas().size()
+	}
+	
+	method cantPersonasInfectadasNoAisladas() {
+		return self.PersonasInfectadas().filter( { pers => pers.estaAislada() } ).size()
+	}
+	
+			
 	
 	method simulacionContagiosDiarios() { 
 		const cantidadContagiadores = self.cantidadContagiadores()

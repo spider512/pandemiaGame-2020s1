@@ -19,7 +19,9 @@ object simulacion {
 	 */ 	
 	method tomarChance(porcentaje) = 0.randomUpTo(100) < porcentaje
 
-	method agregarManzana(manzana) { manzanas.add(manzana) }
+	method agregarManzana(manzana) { if (not manzanas.contains(manzana)) manzanas.add(manzana)
+		else self.error("Esta cuadricula ya tiene manzana asignada")
+	}
 	
 	method debeInfectarsePersona(persona, cantidadContagiadores) {
 		const chanceDeContagio = if (persona.respetaCuarentena()) 
