@@ -18,7 +18,7 @@ object pandemiaGameConfig {
 		        agenteDeSalud.memoriaManzana(elemento)
 		        game.say(agenteDeSalud,agenteDeSalud.mensaje())    })
 		})
-		keyboard.a().onPressDo({ console.println("Puede consultar el estado de la ciuad con la tecla E, sumar una persona infectada en una manzana al azar con la Y, pasar un dia con la telca O") })
+		keyboard.a().onPressDo({ console.println("Puede consultar el estado de la ciuad con la tecla E, sumar una persona infectada en una manzana al azar con la Y, pasar un dia con la telca O, ENTER para agregar el agente.") })
 		simulacion.acciones()
 		console.println("Bienvenido al PANDEMIA GAME, vas a poder simular tu propia pandemia y luchar contra ella como un agente de salud! , consulta los comandos con la tecla A y comienza ya mismo")
 		
