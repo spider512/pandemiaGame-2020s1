@@ -1,0 +1,27 @@
+import manzanas.*
+import personas.*
+import simulacion.*
+
+test "testX" {
+	
+	const per1= new Persona()
+	const per2= new Persona(estaAislada=true,respetaLaCuarentena=true)
+	const per3= new Persona(estaAislada=true)
+	const per4= new Persona(estaAislada=true,respetaLaCuarentena=true)
+	const per5= new Persona(estaAislada=true)
+	
+	
+	const manzana1= new Manzana()
+	manzana1.agregarPersona(per1)
+	manzana1.agregarPersona(per2)
+	manzana1.agregarPersona(per3)
+	manzana1.agregarPersona(per4)
+	manzana1.agregarPersona(per5)
+	
+	
+	assert.equals(5,manzana1.genteViviendo())
+	assert.equals(3,manzana1.personasInfectadas())
+	assert.equals(1,manzana1.cantidadContagiadores()) //per1
+	assert.that(true)
+
+}
